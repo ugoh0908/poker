@@ -173,8 +173,10 @@ def main():
             win_rate, tie_rate = estimate_win_probability(hole_cards, num_opponents, trials)
             print(f"ホールカード: {hole_cards}, 相手人数: {num_opponents}, 試行回数: {trials}")
             print(f"推定勝率: {win_rate:.2f}%")
-            result_label.config(text=f"結果: {win_rate}")
             print(f"推定引き分け率: {tie_rate:.2f}%")
+
+            return f"ホールカード: {hole_cards}, 勝率: {win_rate:.2f}%, 引き分け率: {tie_rate:.2f}%"
+
 
 def change_card_name(origin_name):
     split_name=origin_name.split("_")
@@ -263,16 +265,17 @@ def estimate_win_probability(hole_cards_str, num_opponents=3, trials=10000):
     
     return win_rate, tie_rate
 
-if __name__ == "__main__":
-    main()
+
 
 def thread_main():
     try:
-        main()
+        result = main()
+        result_label.after(0, lambda: result_label.config(text=f"結果: {result}"))
     except Exception as e:
-        print(f"エラーが発生しました: {e}")
+        result_label.after(0, lambda: result_label.config(text=f"エラー: {e}"))
 
 def create_gui():
+    global result_label
     root = tk.Tk()
     root.title("ポーカー解析ツール")
     root.geometry("400x200")
@@ -281,10 +284,13 @@ def create_gui():
     label.pack(pady=20)
 
     # ボタン作成
-    button - tk.Button(root, text="解析開始",command=lambda: Thread(target=threaded_main).start())
+    button = tk.Button(root, text="解析開始",command=lambda: Thread(target=thread_main).start())
     button.pack(pady=20)
     
     result_label = tk.Label(root,text="結果: 未計算")
     result_label.pack(pady=10)
 
     root.mainloop()
+
+if __name__ == "__main__":
+    create_gui()
