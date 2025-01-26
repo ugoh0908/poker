@@ -59,4 +59,4 @@ class mainconst:
 
     # スクショ保存するパス設定
 
-    screenshot_save_path = r"D:\開発\poker\screenshot"
+    screenshot_save_path = r"D:\develop\poker\screenshot"

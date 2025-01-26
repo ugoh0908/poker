@@ -20,9 +20,6 @@ from Flow.main_flow import main_flow
 # Tesseractのパスを設定（インストール済みであることが前提）
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-# スクショ保存するパス設定
-screenshot_save_path = r"D:\開発\poker\screenshot"
-
 
 # カードのクラス数を明示的に指定（例: 52）
 num_classes = 52

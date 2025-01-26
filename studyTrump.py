@@ -4,44 +4,44 @@ import torch.optim as optim
 from torchvision import datasets, transforms, models
 import os
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ########################
     # 1. データセットの用意
     ########################
-    data_dir = "D:\\\\開発\\\\poker\\\\data"  # 先ほどの data/ ディレクトリへのパス
+    data_dir = "D:\\\\develop\\\\poker\\\\data"  # 先ほどの data/ ディレクトリへのパス
     batch_size = 8
     num_workers = 0  # 初期設定を0にしてデバッグしやすく
 
     # 画像の前処理を定義
-    train_transforms = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(
-            mean=[0.485, 0.456, 0.406], 
-            std=[0.229, 0.224, 0.225])
-    ])
-    val_transforms = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(
-            mean=[0.485, 0.456, 0.406], 
-            std=[0.229, 0.224, 0.225])
-    ])
+    train_transforms = transforms.Compose(
+        [
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ]
+    )
+    val_transforms = transforms.Compose(
+        [
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ]
+    )
 
     # ImageFolder を使ってデータセットを作成
-    train_dataset = datasets.ImageFolder(os.path.join(data_dir, 'train'),
-                                         transform=train_transforms)
-    val_dataset   = datasets.ImageFolder(os.path.join(data_dir, 'val'),
-                                         transform=val_transforms)
+    train_dataset = datasets.ImageFolder(
+        os.path.join(data_dir, "train"), transform=train_transforms
+    )
+    val_dataset = datasets.ImageFolder(
+        os.path.join(data_dir, "val"), transform=val_transforms
+    )
 
     # DataLoader を作成
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=batch_size,
-        shuffle=True, num_workers=num_workers
+        train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
     )
     val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=batch_size,
-        shuffle=False, num_workers=num_workers
+        val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers
     )
 
     # クラス数（フォルダ数）を取得
@@ -97,7 +97,7 @@ if __name__ == '__main__':
             running_loss += loss.item()
 
         epoch_loss = running_loss / len(train_loader)
-        
+
         ####################
         # 4.2 検証
         ####################
@@ -122,11 +122,15 @@ if __name__ == '__main__':
         val_loss = val_loss / len(val_loader)
         val_acc = 100.0 * correct / total
 
-        print(f"Epoch [{epoch+1}/{num_epochs}], "
-              f"Train Loss: {epoch_loss:.4f}, "
-              f"Val Loss: {val_loss:.4f}, "
-              f"Val Acc: {val_acc:.2f}%")
+        print(
+            f"Epoch [{epoch+1}/{num_epochs}], "
+            f"Train Loss: {epoch_loss:.4f}, "
+            f"Val Loss: {val_loss:.4f}, "
+            f"Val Acc: {val_acc:.2f}%"
+        )
 
     # 学習が終わったらモデルを保存
     torch.save(model.state_dict(), "card_classifier.pth")
-    print("\u5b66\u7fd2\u5b8c\u4e86\uff01\u30e2\u30c7\u30eb\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f\u3002")
+    print(
+        "\u5b66\u7fd2\u5b8c\u4e86\uff01\u30e2\u30c7\u30eb\u3092\u4fdd\u5b58\u3057\u307e\u3057\u305f\u3002"
+    )
